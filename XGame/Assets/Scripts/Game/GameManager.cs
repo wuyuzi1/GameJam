@@ -11,7 +11,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Start()
     {
-
+        UIManager.Instance.OpenWindow(Const.GameMainWindow);
     }
 
     private void Update()

@@ -29,6 +29,11 @@ public class PlayerInput : MonoSingleton<PlayerInput>
         _playerInputMap.Disable();
     }
 
+    private void OnDestroy()
+    {
+        _playerInputMap = null;
+    }
+
     private void Update()
     {
         _moveInput = _playerInputMap.Player.Move.ReadValue<Vector2>();

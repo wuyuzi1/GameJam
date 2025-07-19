@@ -23,6 +23,11 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
         if(_instance == null)
         {
             _instance = this as T;
+            Init();
+        }
+        else if (_instance != this)
+        {
+            Destroy(this.gameObject);
         }
     }
 
