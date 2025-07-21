@@ -30,7 +30,7 @@ public class FishingSite : MonoBehaviour, IInterable
         buoy.transform.localPosition = GetBuoyInitPosition(interactTrans);
         Vector2 clampX = new Vector2(transform.position.x - _box.bounds.extents.x, transform.position.x + _box.bounds.extents.x);
         Vector2 clamoY = new Vector2(transform.position.y - _box.bounds.extents.y, transform.position.y + _box.bounds.extents.y);
-        EventCenter.Instance.TriggerEvent("SetIsFishing", true , );
+        EventCenter.Instance.TriggerEvent("SetIsFishing", true , clampX,clamoY);
         EventCenter.Instance.TriggerEvent("SetBuoy",buoy.transform);
     }
 
