@@ -22,11 +22,11 @@ public class InteractionButton : MonoBehaviour
         _buttonText.text = text;
     }
 
-    public void SetButtonAction(Action callback)
+    public void SetButtonAction(Action<Transform> callback, Transform trans)
     {
         _button.onClick.AddListener(()=>
         {
-            callback.Invoke();
+            callback.Invoke(trans);
             UIManager.Instance.CloseWindow(Const.InteractionWindow);
             EventCenter.Instance.TriggerEvent("SetPlayerNeedCheck", false);
         });

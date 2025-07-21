@@ -6,35 +6,44 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private float _moveSpeed;
+    public float moveSpeed;
+    public float buoyMoveSpeed;
     private Rigidbody2D _playerRb;
     private Transform _needFlip;
+    private Transform _buoy;
+    private Vector2 _fishingClampX;
+    private Vector2 _fishingClampY;
     private LayerMask _interactLayer;
     private List<Collider2D> _lastInteractList;
     private bool _needRayCheck;
+    private bool _isFishing;
 
     private void Awake()
     {
         _lastInteractList = new List<Collider2D>();
         _playerRb = GetComponent<Rigidbody2D>();
         _needFlip = transform.Find("NeedFlip");
+        _buoy = transform.Find("Buoy");
     }
 
     private void OnEnable()
     {
         EventCenter.Instance.AddListener("SetPlayerNeedCheck", SetPlayerNeedCheck);
+        EventCenter.Instance.AddListener("SetIsFishing", SetIsFishing);
     }
 
     private void OnDisable()
     {
         EventCenter.Instance.RemoveListener("SetPlayerNeedCheck", SetPlayerNeedCheck);
+        EventCenter.Instance.RemoveListener("SetIsFishing", SetIsFishing);
     }
 
     private void Start()
     {
-        _moveSpeed = 5f;
         _interactLayer = 1 << 9;
         _needRayCheck = true;
+        _isFishing = false;
+        _buoy.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -43,7 +52,14 @@ public class PlayerController : MonoBehaviour
         { 
             CheckInteract();
         }
-        PlayerMove();
+        if (_isFishing)
+        {
+            FishingBuoyMove();
+        }
+        else
+        {
+            PlayerMove();
+        }
     }
 
     private void PlayerMove()
@@ -56,7 +72,7 @@ public class PlayerController : MonoBehaviour
         {
             _needFlip.localScale = new Vector3(1, 1, 1);
         }
-        _playerRb.velocity = PlayerInput.Instance.MoveInput * _moveSpeed;
+        _playerRb.velocity = PlayerInput.Instance.MoveInput * moveSpeed;
     }
 
     private void CheckInteract()
@@ -97,7 +113,7 @@ public class PlayerController : MonoBehaviour
                     IInterable interactable = item.GetComponent<IInterable>();
                     InteractionButton button = buttonGo.GetComponent<InteractionButton>();
                     button.SetText(interactable.ButtonName);
-                    button.SetButtonAction(interactable.Interact);
+                    button.SetButtonAction(interactable.Interact,this.transform);
                 }
             }
             _lastInteractList = colliders.ToList<Collider2D>();
@@ -106,8 +122,24 @@ public class PlayerController : MonoBehaviour
 
     private void SetPlayerNeedCheck(object[] args)
     {
-        bool needCheck = (bool)args[0];
-        _needRayCheck = needCheck;
+        _needRayCheck = (bool)args[0];
+    }
+
+    private void SetIsFishing(object[] args)
+    {
+        _isFishing = (bool)args[0];
+        _fishingClampX = (Vector2)args[1];
+        _fishingClampY = (Vector2)args[2];
+        _buoy.gameObject.SetActive(true);
+    }
+
+    private void FishingBuoyMove()
+    {
+        if(PlayerInput.Instance.MoveInput != Vector2.zero)
+        {
+            Vector3 target = PlayerInput.Instance.MoveInput * buoyMoveSpeed * Time.deltaTime;
+            _buoy.Translate(target);
+        }
     }
 
     private void OnDrawGizmos()

@@ -9,5 +9,5 @@ public interface IInterable
         get; set;
     }
 
-    public void Interact();
+    public void Interact(Transform interactTrans);
 }

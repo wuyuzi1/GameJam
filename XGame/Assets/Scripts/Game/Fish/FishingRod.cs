@@ -22,6 +22,16 @@ public class FishingRod : MonoBehaviour
         _buoyLineRenderer = _begin.GetComponent<LineRenderer>();
     }
 
+    private void OnEnable()
+    {
+        EventCenter.Instance.AddListener("SetBuoy",SetBuoy);
+    }
+
+    private void OnDisable()
+    {
+        EventCenter.Instance.RemoveListener("SetBuoy", SetBuoy);
+    }
+
     private void Update()
     {
         if (_buoy != null)
@@ -62,7 +72,9 @@ public class FishingRod : MonoBehaviour
         _buoyLineRenderer.positionCount = 2;
         _buoyLineRenderer.SetPosition(0, _begin.position);
         _buoyLineRenderer.SetPosition(1, _buoy.position);
-        float distance = (_buoy.position.y - _end.position.y) * 0.2f;//(_buoy.position.x -_end.position.x) * 0.2f;
+        float strengthy = _buoy.position.y - _end.position.y;
+        float strengthx = _buoy.position.x - _end.position.x;
+        float distance = Mathf.Abs(strengthy) > Mathf.Abs(strengthx) ? strengthy * 0.2f : strengthx * 0.2f;
         _strength = Mathf.Clamp(distance, -2f, 2f);
     }
 
@@ -75,9 +87,9 @@ public class FishingRod : MonoBehaviour
         }
     }
 
-    public void SetBuoy(Transform buoy = null)
+    private void SetBuoy(object[] args)
     {
-        _buoy = buoy;
+        _buoy = (Transform) args[0];
     }
 }
 
