@@ -39,4 +39,16 @@ public class PlayerInput : MonoSingleton<PlayerInput>
         _moveInput = _playerInputMap.Player.Move.ReadValue<Vector2>();
     }
 
+    private void SetPlayerInputMapActivate(bool enable)
+    {
+        if (enable)
+        {
+            _playerInputMap.Enable();
+        }
+        else
+        {
+            _playerInputMap.Disable();
+        }
+    }
+
 }

@@ -7,11 +7,12 @@ public class StateMachine
 {
     public GameObject Holder;
     private StateBase _curState;
-    private Dictionary<EStateID, StateBase> _stateDic;
+    public Dictionary<EStateID, StateBase> _stateDic;
 
     public StateMachine(GameObject holder)
     {
         Holder = holder;
+        _stateDic = new Dictionary<EStateID,StateBase>();
     }
 
     public void AddState(EStateID stateID)
@@ -32,11 +33,11 @@ public class StateMachine
         _curState.Enter();
     }
 
-    public void UpdateState()
+    public void UpdateState(float dt)
     {
         if(_curState!=null)
         {
-            _curState.Update();
+            _curState.Update(dt);
         }
     }
 }

@@ -16,6 +16,12 @@ public class UIManager : MonoSingleton<UIManager>
         InitUIPath();
     }
 
+    private new void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
+    }
+
     public void OpenWindow(string uiname)
     {
         if(_openUIDic.ContainsKey(uiname))
@@ -102,6 +108,8 @@ public class UIManager : MonoSingleton<UIManager>
     {
         _pathDic.Add(Const.InteractionWindow, "UI/Prefab/InteractionWindow");
         _pathDic.Add(Const.GameMainWindow, "UI/Prefab/GameMainWindow");
+        _pathDic.Add(Const.PostWindow, "UI/Prefab/PostWindow");
+        _pathDic.Add(Const.FishingInteractionWindow, "UI/Prefab/FishingInteractionWindow");
     }
 
     public void Clear()

@@ -74,7 +74,8 @@ public class FishingRod : MonoBehaviour
         _buoyLineRenderer.SetPosition(1, _buoy.position);
         float strengthy = _buoy.position.y - _end.position.y;
         float strengthx = _buoy.position.x - _end.position.x;
-        float distance = Mathf.Abs(strengthy) > Mathf.Abs(strengthx) ? strengthy * 0.2f : strengthx * 0.2f;
+        float flag = strengthx > 0 ? 1f : -1f;
+        float distance = Mathf.Abs(strengthy) > Mathf.Abs(strengthx) ? Mathf.Abs(strengthy) * 0.2f * flag : strengthx * 0.2f;
         _strength = Mathf.Clamp(distance, -2f, 2f);
     }
 

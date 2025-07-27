@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _playerRb;
     private Transform _needFlip;
     private Transform _buoy;
+    private CircleCollider2D _buoyCollider;
     private Vector2 _fishingClampX;
     private Vector2 _fishingClampY;
     private LayerMask _interactLayer;
@@ -24,18 +25,21 @@ public class PlayerController : MonoBehaviour
         _playerRb = GetComponent<Rigidbody2D>();
         _needFlip = transform.Find("NeedFlip");
         _buoy = transform.Find("Buoy");
+        _buoyCollider = _buoy.GetComponent<CircleCollider2D>();
     }
 
     private void OnEnable()
     {
         EventCenter.Instance.AddListener("SetPlayerNeedCheck", SetPlayerNeedCheck);
         EventCenter.Instance.AddListener("SetIsFishing", SetIsFishing);
+        EventCenter.Instance.AddListener("ActiveBuoy", ActiveBuoy);
     }
 
     private void OnDisable()
     {
         EventCenter.Instance.RemoveListener("SetPlayerNeedCheck", SetPlayerNeedCheck);
         EventCenter.Instance.RemoveListener("SetIsFishing", SetIsFishing);
+        EventCenter.Instance.RemoveListener("ActiveBuoy", ActiveBuoy);
     }
 
     private void Start()
@@ -133,12 +137,20 @@ public class PlayerController : MonoBehaviour
         _buoy.gameObject.SetActive(true);
     }
 
-    private void FishingBuoyMove()
+    private void ActiveBuoy(object[] args)
+    {
+        _buoyCollider.enabled = (bool) args[0];
+    }
+
+private void FishingBuoyMove()
     {
         if(PlayerInput.Instance.MoveInput != Vector2.zero)
         {
-            Vector3 target = PlayerInput.Instance.MoveInput * buoyMoveSpeed * Time.deltaTime;
-            _buoy.Translate(target);
+            Vector3 targetDelta = PlayerInput.Instance.MoveInput * buoyMoveSpeed * Time.deltaTime;
+            _buoy.Translate(targetDelta);
+            float targetX = Mathf.Clamp(_buoy.transform .position.x,_fishingClampX.x, _fishingClampX.y);
+            float targetY = Mathf.Clamp(_buoy.transform.position.y,_fishingClampY.x, _fishingClampY.y);
+            _buoy.transform.position = new Vector3(targetX, targetY, 0);
         }
     }
 

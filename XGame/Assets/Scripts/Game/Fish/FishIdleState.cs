@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class FishIdleState : StateBase
 {
+    private float _curTime;
+    private float _delayTime;
+    private bool _running;
     public FishIdleState(StateMachine machine):base(machine)
     {
-       
+   
     }
 
     public override void Enter()
     {
-        
+        Debug.Log("Idle");
+        _curTime = 0;
+        _delayTime = Random.Range(2f,4f);
+        _running = false;
     }
 
     public override void Exit()
@@ -19,8 +25,16 @@ public class FishIdleState : StateBase
         
     }
 
-    public override void Update()
+    public override void Update(float dt)
     {
-        
+        if(!_running)
+        {
+            _curTime += dt;
+            if(_curTime >= _delayTime)
+            {
+                _running = true;
+                _machine.ChangeState(EStateID.FishPatrol);
+            }
+        }
     }
 }

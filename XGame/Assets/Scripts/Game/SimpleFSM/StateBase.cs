@@ -11,7 +11,7 @@ public abstract class StateBase
         _machine = machine;
     }
 
-    public abstract void Update();
+    public abstract void Update(float dt);
 
     public abstract void Enter();
 

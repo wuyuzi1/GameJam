@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class FishChaseState : StateBase
 {
-    private float _speed;
+    private Transform _buoyTarget;
+    private FishController _fishController;
 
     public FishChaseState(StateMachine machine) : base(machine)
     {
-
+        _fishController = _machine.Holder.GetComponent<FishController>();
     }
 
     public override void Enter()
     {
-        
+        _buoyTarget = GameObject.FindGameObjectWithTag("Player").transform.Find("Buoy");
+        _machine.Holder.transform.up = (_buoyTarget.position - _machine.Holder.transform.position).normalized;
     }
 
     public override void Exit()
@@ -21,8 +23,14 @@ public class FishChaseState : StateBase
         
     }
 
-    public override void Update()
+    public override void Update(float dt)
     {
-        
+        _machine.Holder.transform.position = Vector3.MoveTowards(_machine.Holder.transform.position, _buoyTarget.position, _fishController.fishSO.speed * dt);
+        if ((_machine.Holder.transform.position - _buoyTarget.position).sqrMagnitude < 0.01f)
+        {
+            EventCenter.Instance.TriggerEvent("CancelAllChase");
+            UIManager.Instance.OpenWindow(Const.FishingInteractionWindow);
+            GameObject.Destroy(_machine.Holder.gameObject);
+        }
     }
 }

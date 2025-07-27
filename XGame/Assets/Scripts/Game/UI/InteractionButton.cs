@@ -26,9 +26,9 @@ public class InteractionButton : MonoBehaviour
     {
         _button.onClick.AddListener(()=>
         {
-            callback.Invoke(trans);
             UIManager.Instance.CloseWindow(Const.InteractionWindow);
             EventCenter.Instance.TriggerEvent("SetPlayerNeedCheck", false);
+            callback.Invoke(trans);
         });
     }
 
