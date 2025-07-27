@@ -28,6 +28,8 @@ public class FishingSystem: Singleton<FishingSystem>
         _totalRound = 0;
         _successNeedCount = 0;
         _successCount = 0;
+        AudioManager.Instance.PlayEffectAudio("sound_fishBite");
+        EventCenter.Instance.TriggerEvent("ActiveBuoy", false);
         switch (_fishLevel)
         {
             case 1:
@@ -37,10 +39,12 @@ public class FishingSystem: Singleton<FishingSystem>
             case 2:
                 _totalRound = 6;
                 _successNeedCount = 4;
+                EventCenter.Instance.TriggerEvent("SetShrinkTotalTime", -1.2f);
                 break;
             case 3:
                 _totalRound = 9;
                 _successNeedCount = 6;
+                EventCenter.Instance.TriggerEvent("SetShrinkTotalTime", -1.5f);
                 break;
         }
         UIManager.Instance.OpenWindow(Const.FishingInteractionWindow);
@@ -53,12 +57,17 @@ public class FishingSystem: Singleton<FishingSystem>
         _curRound++;
         if(_successCount == _successNeedCount)
         {
+            AudioManager.Instance.PlayEffectAudio("sound_fishSuccess");
             FishingEnd();
-            GetReward();
+            TimerManager.Instance.GetOneTimer(0.5f, () =>
+             {
+                 GetReward();
+             });
             return;
         }
         if(_curRound > _totalRound)
         {
+            AudioManager.Instance.PlayEffectAudio("sound_fishEscape");
             FishingEnd();
             return;
         }
@@ -71,10 +80,12 @@ public class FishingSystem: Singleton<FishingSystem>
         bool isSuccess = issuccess;
         if(isSuccess)
         {
+            AudioManager.Instance.PlayEffectAudio("sound_fishHit");
             FishingSuccess();
         }
         else
         {
+            AudioManager.Instance.PlayEffectAudio("sound_circlefail");
             FishingFail();
         }
     }
@@ -112,6 +123,7 @@ public class FishingSystem: Singleton<FishingSystem>
         EventCenter.Instance.TriggerEvent("SetBuoy");
         EventCenter.Instance.TriggerEvent("SetIsFishing", false);
         EventCenter.Instance.TriggerEvent("SetPlayerInputMapActivate", true);
+        EventCenter.Instance.TriggerEvent("HideAllFishingButton");
         GameManager.Instance.ChangePlayerCameraFellow(GameObject.FindWithTag("Player").transform);
     }
 }

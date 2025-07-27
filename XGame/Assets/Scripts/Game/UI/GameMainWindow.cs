@@ -24,6 +24,7 @@ public class GameMainWindow : MonoBehaviour, IWindow
         _startFishingButton.onClick.AddListener(ActiveBuoy);
         _quitFishingButton.onClick.AddListener (QuitFishingMode);
         EventCenter.Instance.AddListener("ShowFishingStartButton", ShowFishingStartButton);
+        EventCenter.Instance.AddListener("HideAllFishingButton", HideAllFishingButton);
     }
 
     private void OnDisable()
@@ -32,6 +33,7 @@ public class GameMainWindow : MonoBehaviour, IWindow
         _startFishingButton.onClick.RemoveListener(ActiveBuoy);
         _quitFishingButton.onClick.RemoveListener(QuitFishingMode);
         EventCenter.Instance.RemoveListener("ShowFishingStartButton", ShowFishingStartButton);
+        EventCenter.Instance.RemoveListener("HideAllFishingButton", HideAllFishingButton);
     }
 
     private void ReturnToLoading()
@@ -43,6 +45,7 @@ public class GameMainWindow : MonoBehaviour, IWindow
     {
         EventCenter.Instance.TriggerEvent("ActiveBuoy",true);
         EventCenter.Instance.TriggerEvent("SetPlayerInputMapActivate", false);
+        AudioManager.Instance.PlayEffectAudio("sound_dropIteminwater");
         _startFishingButton.gameObject.SetActive(false);
         _quitFishingButton.gameObject.SetActive(true);
     }
@@ -56,6 +59,12 @@ public class GameMainWindow : MonoBehaviour, IWindow
     private void ShowFishingStartButton(object[] args)
     {
         _startFishingButton.gameObject.SetActive((bool)args[0]);
+    }
+
+    private void HideAllFishingButton(object[] args)
+    {
+        _startFishingButton.gameObject.SetActive(false);
+        _quitFishingButton.gameObject.SetActive(false);
     }
 
     public void Close()

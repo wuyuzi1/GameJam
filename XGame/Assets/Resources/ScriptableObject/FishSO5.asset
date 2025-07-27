@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb3502587e8cd114ab8c7e781ba32411, type: 3}
   m_Name: FishSO5
   m_EditorClassIdentifier: 
-  speed: 0.8
-  chaseSpeed: 1
+  speed: 0.5
+  chaseSpeed: 0.5
   radius: 3
+  size: 1.5

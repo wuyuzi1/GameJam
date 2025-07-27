@@ -11,17 +11,19 @@ public class AudioManager : MonoSingleton<AudioManager>
     {
         base.Awake();
         _bgmSource = GetComponent<AudioSource>();
+        DontDestroyOnLoad(gameObject);
     }
 
     public void SetBGM(string bgmname)
     {
-        string audioStr = "Audio/BGM" + bgmname;
+        string audioStr = "Audio/BGM/" + bgmname;
         _bgmSource.clip = Resources.Load<AudioClip>(audioStr);
+        _bgmSource.Play();
     }
 
     public void PlayEffectAudio(string effectname)
     {
-        GameObject effectaudio = GameObjectPool.Instance.GetFromPool("EffectAudio");
+        GameObject effectaudio = GameObjectPool.Instance.GetFromPool("EffectAudio",transform);
         effectaudio.GetComponent<EffectAudio>().SetEffectAudioClip(effectname);
     }
 }

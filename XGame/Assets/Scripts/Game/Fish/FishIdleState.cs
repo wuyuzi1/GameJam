@@ -15,7 +15,7 @@ public class FishIdleState : StateBase
     public override void Enter()
     {
         _curTime = 0;
-        _delayTime = Random.Range(2f,4f);
+        _delayTime = Random.Range(1f,2f);
         _running = false;
     }
 

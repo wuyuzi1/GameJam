@@ -9,4 +9,5 @@ public class FishSO : ScriptableObject
     public float speed;
     public float chaseSpeed;
     public float radius;
+    public float size;
 }

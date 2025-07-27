@@ -15,6 +15,7 @@ public class GameObjectPool : Singleton<GameObjectPool>
 
     public GameObject GetFromPool(string prefabName)
     {
+        Debug.Log("GetFromPool-------------" + prefabName);
         GameObject go = null;
         string pathStr = $"Game/Prefab/Pool/{prefabName}";
         if(!_pool.ContainsKey(prefabName) || _pool[prefabName].Count <=0)

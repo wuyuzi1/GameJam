@@ -8,12 +8,12 @@ public class SpawnFishPoint : MonoBehaviour
     public float radiusMax;
     public float radiusMin;
     public int spawnFishCount;
-    private FishingSite _fishingSite;
+    public FishingSite fishingSite;
 
     private void Start()
     {
         _radius = Random.Range(radiusMin, radiusMax);
-        _fishingSite = transform.parent.GetComponent<FishingSite>();
+        fishingSite = transform.parent.GetComponent<FishingSite>();
         SpawnFish();
     }
 
@@ -33,19 +33,19 @@ public class SpawnFishPoint : MonoBehaviour
             float random = Random.Range(0f, 1f);
             List<FishConfig> fishGroup;
             int fishLevel = 0;
-            if(random < _fishingSite.levelOneProbability)
+            if(random < fishingSite.levelOneProbability)
             {
-                fishGroup = _fishingSite.fishGroup.storeDic[1];
+                fishGroup = fishingSite.fishGroup.storeDic[1];
                 fishLevel = 1;
             }
-            else if(random < _fishingSite.levelTwoProbability)
+            else if(random < fishingSite.levelTwoProbability)
             {
-                fishGroup = _fishingSite.fishGroup.storeDic[2];
+                fishGroup = fishingSite.fishGroup.storeDic[2];
                 fishLevel = 2;
             }
             else
             {
-                fishGroup = _fishingSite.fishGroup.storeDic[3];
+                fishGroup = fishingSite.fishGroup.storeDic[3];
                 fishLevel = 3;
             }
             int getFish = Random.Range(0, fishGroup.Count);

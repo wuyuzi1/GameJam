@@ -25,11 +25,11 @@ public class SceneLoader : MonoSingleton<SceneLoader>
     private IEnumerator LoadSceneFade(string sceneName)
     {
         _fadeGo.SetActive(true);
-        //_fadeGo.GetComponent<CanvasGroup>().alpha = 1f;
         _fadeAnim.Play("FadeIn");
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(sceneName);
         yield return new WaitForSeconds(3f);
+        AudioManager.Instance.SetBGM($"bgm_{sceneName}");
         _fadeGo.SetActive(false);
     }
     

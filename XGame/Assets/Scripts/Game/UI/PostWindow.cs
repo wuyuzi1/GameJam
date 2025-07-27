@@ -36,7 +36,8 @@ public class PostWindow : MonoBehaviour,IWindow
 
     public void SetPost(string itemname)
     {
-        _title.text = $"恭喜开启宝获得了:{itemname}";
+        _title.text = $"恭喜获得了:{itemname}";
+        AudioManager.Instance.PlayEffectAudio("sound_getNewItem");
     }
 
     private void CloseSelf()

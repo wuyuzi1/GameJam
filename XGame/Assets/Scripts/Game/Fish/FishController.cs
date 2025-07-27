@@ -12,11 +12,13 @@ public class FishController : MonoBehaviour
     private StateMachine _stateMachine;
     private LayerMask _fishLayer;
     private SpawnFishPoint _spawnFishPoint;
+    private Transform _shadow;
     
 
     private void Awake()
     {
         _collider = GetComponent<CircleCollider2D>();
+        _shadow = transform.Find("Shadow");
         InitStateMachine();
     }
 
@@ -46,6 +48,7 @@ public class FishController : MonoBehaviour
         fishID = fishConfig.fishID;
         fishLevel = fishlevel;
         _collider.radius = fishSO.radius;
+        _shadow.localScale = _shadow.localScale * fishSO.size;
         _stateMachine.ChangeState(EStateID.FishIdle);
     }
 
@@ -69,8 +72,7 @@ public class FishController : MonoBehaviour
 
     private void CancelAllChase(object[] args)
     {
-        Debug.Log("CancelAllChase");
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 35f, _fishLayer);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(_spawnFishPoint.fishingSite.transform.position, 35f, _fishLayer);
         for(int i=0;i<colliders.Length;i++)
         {
             colliders[i].GetComponent<FishController>().ChangeToPatrol();

@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     public float buoyMoveSpeed;
     private Rigidbody2D _playerRb;
+    private Animator _animator;
     private Transform _needFlip;
     private Transform _buoy;
     private CircleCollider2D _buoyCollider;
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
         _needFlip = transform.Find("NeedFlip");
         _buoy = transform.Find("Buoy");
         _buoyCollider = _buoy.GetComponent<CircleCollider2D>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void OnEnable()
@@ -76,6 +78,7 @@ public class PlayerController : MonoBehaviour
         {
             _needFlip.localScale = new Vector3(1, 1, 1);
         }
+        _animator.SetFloat("PlayerInput", PlayerInput.Instance.MoveInput.magnitude);
         _playerRb.velocity = PlayerInput.Instance.MoveInput * moveSpeed;
     }
 

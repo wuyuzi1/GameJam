@@ -20,10 +20,16 @@ public class TreasureChest : MonoBehaviour,IInterable
 
     public void Interact(Transform interactTrans)
     {
-        UIManager.Instance.OpenWindow(Const.PostWindow);
-        UIManager.Instance.GetWindow(Const.PostWindow).GetComponent<PostWindow>().SetPost("½ð±Ò");
+        transform.GetChild(0).gameObject.SetActive(true);
+        _collider.enabled = false;
         EventCenter.Instance.TriggerEvent("SetPlayerNeedCheck", true);
-        Destroy(this.gameObject);
+        AudioManager.Instance.PlayEffectAudio("sound_openbox");
+        TimerManager.Instance.GetOneTimer(0.6f, () =>
+         {
+             UIManager.Instance.OpenWindow(Const.PostWindow);
+             UIManager.Instance.GetWindow(Const.PostWindow).GetComponent<PostWindow>().SetPost("½ð±Ò");
+             Destroy(this.gameObject);
+         });
     }
 
     private void Awake()

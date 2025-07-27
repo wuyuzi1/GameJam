@@ -42,6 +42,7 @@ public class FishingInteractionWindow : MonoBehaviour, IWindow
     {
         EventCenter.Instance.AddListener("SetYellowCircle", SetYellowCircle);
         EventCenter.Instance.AddListener("UpdateLeftRoundText", UpdateLeftRoundText);
+        EventCenter.Instance.AddListener("SetShrinkTotalTime", SetShrinkTotalTime);
         _fishingButton.onClick.AddListener(InteracteClick);
     }
 
@@ -49,6 +50,7 @@ public class FishingInteractionWindow : MonoBehaviour, IWindow
     {
         EventCenter.Instance.RemoveListener("SetYellowCircle", SetYellowCircle);
         EventCenter.Instance.RemoveListener("UpdateLeftRoundText", UpdateLeftRoundText);
+        EventCenter.Instance.RemoveListener("SetShrinkTotalTime", SetShrinkTotalTime);
         _fishingButton.onClick.RemoveListener(InteracteClick);
     }
 
@@ -88,6 +90,19 @@ public class FishingInteractionWindow : MonoBehaviour, IWindow
         _yellowCircle.GetChild(_selectRound-1).gameObject.SetActive(true);
         _lastYellowCircle = _yellowCircle.GetChild(_selectRound - 1);
         StartBuleCircleShrink();
+    }
+
+    private void SetShrinkTotalTime(object[] args)
+    {
+        float multiple = (float)args[0];
+        if(multiple>0)
+        {
+            _shrinkTotalTime*=multiple;
+        }
+        else
+        {
+            _shrinkTotalTime /= multiple;
+        }
     }
 
     private void UpdateLeftRoundText(object[] args)

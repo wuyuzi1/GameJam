@@ -13,8 +13,10 @@ public class EffectAudio : MonoBehaviour
 
     public void SetEffectAudioClip(string effectname)
     {
-        string audioStr = "Audio/Effect" + effectname;
+        _audioSource.clip = null;
+        string audioStr = "Audio/Effect/" + effectname;
         _audioSource.clip = Resources.Load<AudioClip>(audioStr);
+        _audioSource.Play();
         TimerManager.Instance.GetOneTimer(_audioSource.clip.length,()=>
         {
             GameObjectPool.Instance.PushToPool(this.gameObject);

@@ -11,9 +11,9 @@ public class LoadingWindow : MonoBehaviour
 
     private void Awake()
     {
-        _startButton = transform.GetChild(0).GetComponent<Button>();
-        _optionButton = transform.GetChild(1).GetComponent<Button>();
-        _quitButton = transform.GetChild(2).GetComponent<Button>();
+        _startButton = transform.Find("StartButton").GetComponent<Button>();
+        _optionButton = transform.Find("OptionButton").GetComponent<Button>();
+        _quitButton = transform.Find("QuitButton").GetComponent<Button>();
     }
 
     private void OnEnable()
