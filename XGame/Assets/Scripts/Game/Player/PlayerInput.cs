@@ -22,11 +22,13 @@ public class PlayerInput : MonoSingleton<PlayerInput>
     private void OnEnable()
     {
         _playerInputMap.Enable();
+        EventCenter.Instance.AddListener("SetPlayerInputMapActivate", SetPlayerInputMapActivate);
     }
 
     private void OnDisable()
     {
         _playerInputMap.Disable();
+        EventCenter.Instance.RemoveListener("SetPlayerInputMapActivate", SetPlayerInputMapActivate);
     }
 
     private void OnDestroy()
@@ -39,8 +41,9 @@ public class PlayerInput : MonoSingleton<PlayerInput>
         _moveInput = _playerInputMap.Player.Move.ReadValue<Vector2>();
     }
 
-    private void SetPlayerInputMapActivate(bool enable)
+    private void SetPlayerInputMapActivate(object[] args)
     {
+        bool enable = (bool)args[0];
         if (enable)
         {
             _playerInputMap.Enable();

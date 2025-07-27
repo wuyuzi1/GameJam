@@ -9,17 +9,20 @@ public class GameMainWindow : MonoBehaviour, IWindow
 {
     private Button _exitButton;
     private Button _startFishingButton;
+    private Button _quitFishingButton;
 
     private void Awake()
     {
         _exitButton = transform.GetChild(0).GetComponent<Button>(); 
         _startFishingButton = transform.Find("StartFishingButton").GetComponent<Button>();
+        _quitFishingButton = transform.Find("CancelFishingButton").GetComponent<Button>();
     }
 
     private void OnEnable()
     {
         _exitButton.onClick.AddListener(ReturnToLoading);
         _startFishingButton.onClick.AddListener(ActiveBuoy);
+        _quitFishingButton.onClick.AddListener (QuitFishingMode);
         EventCenter.Instance.AddListener("ShowFishingStartButton", ShowFishingStartButton);
     }
 
@@ -27,6 +30,7 @@ public class GameMainWindow : MonoBehaviour, IWindow
     {
         _exitButton.onClick.RemoveListener(ReturnToLoading);
         _startFishingButton.onClick.RemoveListener(ActiveBuoy);
+        _quitFishingButton.onClick.RemoveListener(QuitFishingMode);
         EventCenter.Instance.RemoveListener("ShowFishingStartButton", ShowFishingStartButton);
     }
 
@@ -38,7 +42,15 @@ public class GameMainWindow : MonoBehaviour, IWindow
     private void ActiveBuoy()
     {
         EventCenter.Instance.TriggerEvent("ActiveBuoy",true);
+        EventCenter.Instance.TriggerEvent("SetPlayerInputMapActivate", false);
         _startFishingButton.gameObject.SetActive(false);
+        _quitFishingButton.gameObject.SetActive(true);
+    }
+
+    private void QuitFishingMode()
+    {
+        _quitFishingButton.gameObject.SetActive(false);
+        FishingSystem.Instance.QuitFishing();
     }
 
     private void ShowFishingStartButton(object[] args)

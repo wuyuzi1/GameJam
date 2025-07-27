@@ -127,14 +127,22 @@ public class PlayerController : MonoBehaviour
     private void SetPlayerNeedCheck(object[] args)
     {
         _needRayCheck = (bool)args[0];
+        _lastInteractList.Clear();
     }
 
     private void SetIsFishing(object[] args)
     {
         _isFishing = (bool)args[0];
-        _fishingClampX = (Vector2)args[1];
-        _fishingClampY = (Vector2)args[2];
-        _buoy.gameObject.SetActive(true);
+        if (args.Length > 1)
+        {
+            _fishingClampX = (Vector2)args[1];
+            _fishingClampY = (Vector2)args[2];
+            _buoy.gameObject.SetActive(true);
+        }
+        else
+        {
+            _buoy.gameObject.SetActive(false);
+        }
     }
 
     private void ActiveBuoy(object[] args)
@@ -142,7 +150,7 @@ public class PlayerController : MonoBehaviour
         _buoyCollider.enabled = (bool) args[0];
     }
 
-private void FishingBuoyMove()
+    private void FishingBuoyMove()
     {
         if(PlayerInput.Instance.MoveInput != Vector2.zero)
         {

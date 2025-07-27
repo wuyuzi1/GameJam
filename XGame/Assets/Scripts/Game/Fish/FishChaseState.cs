@@ -29,7 +29,7 @@ public class FishChaseState : StateBase
         if ((_machine.Holder.transform.position - _buoyTarget.position).sqrMagnitude < 0.01f)
         {
             EventCenter.Instance.TriggerEvent("CancelAllChase");
-            UIManager.Instance.OpenWindow(Const.FishingInteractionWindow);
+            FishingSystem.Instance.StartFishingInteraction(_fishController.fishID,_fishController.fishLevel);
             GameObject.Destroy(_machine.Holder.gameObject);
         }
     }

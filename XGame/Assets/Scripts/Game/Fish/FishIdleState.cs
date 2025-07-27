@@ -14,7 +14,6 @@ public class FishIdleState : StateBase
 
     public override void Enter()
     {
-        Debug.Log("Idle");
         _curTime = 0;
         _delayTime = Random.Range(2f,4f);
         _running = false;

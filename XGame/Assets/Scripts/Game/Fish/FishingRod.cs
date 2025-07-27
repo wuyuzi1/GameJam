@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -36,6 +37,8 @@ public class FishingRod : MonoBehaviour
     {
         if (_buoy != null)
         {
+            _rodLineRenderer.enabled = true;
+            _buoyLineRenderer.enabled = true;
             DrowBuoyLine();
             DrawFishingRod();
         }
@@ -90,7 +93,15 @@ public class FishingRod : MonoBehaviour
 
     private void SetBuoy(object[] args)
     {
-        _buoy = (Transform) args[0];
+        if(args.Length==0)
+        {
+            _buoy = null;
+            _rodLineRenderer.enabled = false;
+            _buoyLineRenderer.enabled = false;
+            return;
+        }
+        _buoy = (Transform)args[0];
+        GameManager.Instance.ChangePlayerCameraFellow(_buoy);
     }
 }
 

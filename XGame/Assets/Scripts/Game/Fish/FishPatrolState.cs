@@ -13,7 +13,6 @@ public class FishPatrolState : StateBase
     public override void Enter()
     {
         _target = _fishController.GetMoveTarget();
-        Debug.Log("Patorl");
         _machine.Holder.transform.up = (_target - _machine.Holder.transform.position).normalized;
     }
 
